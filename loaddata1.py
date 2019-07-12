@@ -10,5 +10,5 @@ for i in range(5):
     #df_i = df["{}".format(i) == df["Classification"]]
     df_i = df[df.Classification.str.contains("{}".format(i))]
     print(df_i.head())
-    df_sample = df_i.sample(n=5, random_state=1)
-    df_sample.to_csv(path_or_buf="class_{}".format(i), index=False)
+#    df_sample = df_i.sample(n=5, random_state=1)
+    df_i.to_csv(path_or_buf="class_{}".format(i), index=False)

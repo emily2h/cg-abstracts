@@ -21,7 +21,8 @@ def check_adj(word, i):
         c = c4
 
     if word.pos_ == "ADJ":
-        c[word.text.lower()] += 1
+        c[word.lemma_.lower()] += 1
+        #c[word.text.lower()] += 1
 
 def make_cooccur_matrix(df):
     newdf = df.copy()
@@ -29,8 +30,8 @@ def make_cooccur_matrix(df):
     table = np.zeros((len(names), len(names)), dtype=int)
     count = Counter()
 
-    newdf['Classification'] = newdf['Classification'].apply(lambda number: number.split())
-    print(newdf.head())
+#    newdf['Classification'] = newdf['Classification'].apply(lambda number: number.split())
+#    print(newdf.head())
     for line in newdf['Classification']:
         for a in names:
             for b in names:
@@ -79,3 +80,4 @@ print("c4",c4.most_common(10))
     
 # make dataframe of adjectives, use counter on classifications of that?
 
+#see if you can do lemmatization
