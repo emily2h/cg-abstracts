@@ -31,11 +31,9 @@ def find_percentage(abstract):
     else:
         return 1
 
-"""
 # returns random label
-def random_label3():
-    return random.randrange(0, 2)
-"""
+#def random_label3():
+#    return random.randrange(0, 2)
 
 def tiebreaker(majority):
     newmajority = min(majority)  # change from min to max for diff result
@@ -56,18 +54,21 @@ for a in df.Abstract:
     label_i = Counter()
     label_i[exp_studies_keywords(a)] += 1
     label_i[find_percentage(a)] += 1
-    print(label_i)
+    #majority alg
     majority = label_i.most_common()
-    print(majority)
+    if(len(majority) > 1 and majority[0][1] == majority[1][1]):
+        majority = tiebreaker(label_i.most_common())
+    """
     if(len(majority) > 1):
         majority = tiebreaker(majority)
+    """
     tlabels.append(majority)
 
 
-print(tlabels)
+#print(tlabels)
 labels = [x[0][0] for x in tlabels]
 
-# labels = [random.randrange(0, 2) for _ in range(0, len(df['Abstract']))]  # for randomly assigned labels
+#labels = [random.randrange(0, 2) for _ in range(0, len(df['Abstract']))]  #random labels
 #print(labels)
 
 print(labels.count(0))
