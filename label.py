@@ -26,14 +26,20 @@ def exp_studies_keywords(abstract):
 # labeling function 2
 def find_percentage(abstract):
     result = re.findall(r'\d{0,2}\-?\d{1,3}\%', abstract)
+ #   result = re.findall(r'\d{0,2}(\-|\sto\s)?\d{1,3}\s*\%', abstract)
     if len(result) < 1:
         return 0
     else:
         return 1
 
+#labeling function 3
+#def 
+
 # returns random label
 #def random_label3():
 #    return random.randrange(0, 2)
+print(re.findall(r'\d*(\-|\sto\s)?\d+\s*\%', "30-50%"))
+print(re.findall(r'\d{0,2}\-?\d{1,3}\s*\%', "30-50%"))
 
 def tiebreaker(majority):
     newmajority = min(majority)  # change from min to max for diff result
@@ -48,6 +54,13 @@ def score():
     df['Accuracy'] = df.apply(classify, axis=1)
     print(df['Accuracy'].sum()/len(df['Accuracy']))
 
+def rem_keywords():
+    remKeyWords = lambda row: re.sub(r'\|\|.*\|\|', '', row)
+    #remKeyWords = lambda row: re.sub(r'.*\|\|.*\|\|', '', row)    # remove title
+    df['Abstract'] = df['Abstract'].apply(remKeyWords)
+    print(df.head())
+
+rem_keywords()
 
 tlabels = []
 for a in df.Abstract:
@@ -70,12 +83,17 @@ labels = [x[0][0] for x in tlabels]
 
 #labels = [random.randrange(0, 2) for _ in range(0, len(df['Abstract']))]  #random labels
 #print(labels)
+true_labels = list(df['true_label0'])
 
-print(labels.count(0))
-print(labels.count(1))
+print("predicted labels 0:1", labels.count(0), labels.count(1))
+print("true labels 0:1", true_labels.count(0), true_labels.count(1))
 
 df['predicted_label0'] = labels
 
+df_fn = df[(df['true_label0'] == 1) & (df['predicted_label0'] == 0)]
+print(df_fn.shape)
+df_fn.to_csv(path_or_buf="false_negatives.csv", index=False)
+print(df_fn.head())
 
 score()
 cm1 = confusion_matrix(df.true_label0, df.predicted_label0)
@@ -92,3 +110,8 @@ print('Sensitivity : ', sensitivity1 )
 specificity1 = cm1[1,1]/(cm1[1,0]+cm1[1,1])
 print('Specificity : ', specificity1)
 
+precision1 = cm1[0,0]/(cm1[0,0]+cm1[1,1])
+print('precision: ', precision1)
+
+recall1 = cm1[0,0]/(cm1[0,0]+cm1[0,1])
+print('recall: ', recall1)
