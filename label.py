@@ -1,10 +1,14 @@
 import pandas as pd
 import re
 import random
+import spacy 
+from spacy.lemmatizer import Lemmatizer
+from spacy.lang.en import LEMMA_INDEX, LEMMA_EXC, LEMMA_RULES
 from sklearn.metrics import confusion_matrix
 from collections import Counter
+from itertools import islice
 
-
+nlp = spacy.load("en")
 userdir = "/home/emily2h/Summer/cg-abstracts"
 filename = "vci_1543_abs_tit_key_apr_1_2019_train.csv"
 
@@ -15,6 +19,22 @@ addtolabelcol = lambda row: 1\
         if '0' in row.Classification\
         else 0
 df['true_label0'] = df.apply(addtolabelcol, axis=1)
+
+lemmatizer = Lemmatizer(LEMMA_INDEX, LEMMA_EXC, LEMMA_RULES)
+lemmas = lemmatizer(u"experimental", u"ADJ")
+print(lemmas)
+
+remKeyWords = lambda row: re.sub(r'\|\|.*\|\|', '', row)
+df['Abstract'] = df['Abstract'].apply(remKeyWords)
+
+def window(seq, n=2):
+    it = iter(seq)
+    result = tuple(islice(it, n))
+    if len(result) == n:
+        yield result
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result
 
 # labeling function 1
 def exp_studies_keywords(abstract):
@@ -32,14 +52,52 @@ def find_percentage(abstract):
     else:
         return 1
 
-#labeling function 3
-#def 
+exp_func_keyword = ['experiment', 'experimental', 'function', 'functional']
+# labeling function 3
+def experimental_functional(abstract):
+    ab = nlp(abstract)
+    for w in ab:
+        if w.lemma_.lower() in exp_func_keyword:
+            return 1
+    return 0
+
+in_vitro_keyword = [('in', 'vitro'), ('in', 'vivo')]
+before = ['analy', 'assess']
+after = ['analy', 'activity']
+"""
+# labeling function 4
+def in_vitro_before(abstract):
+    ab = [token.text.lower() for token in nlp(abstract)]
+    print(ab)
+    for pair in window(ab):
+        if pair in in_vitro_keyword:
+            print(pair)
+            return 1
+    return 0
+"""
+def in_vitro_before(abstract):
+    result = re.findall(r'(in vivo|in vitro|ex vivo).{0,50}(analy|assess|activity)', abstract)
+    if len(result) < 1:
+        return 0
+    else:
+        print("HERE IS THE RESULT",result)
+        return 1
+in_vitro_before("Conduct an vivo in and in vitro analysis of x.")
+
+    
+# labeling function 5
+def in_vitro_after(abstract):
+    result = re.findall(r'(analy|assess).{0,50}(in vivo|in vitro|ex vivo)', abstract)
+    if len(result) < 1:
+        return 0
+    else:
+        print("HERE IS THE SECOND RESULT",result)
+        return 1
+    
 
 # returns random label
 #def random_label3():
 #    return random.randrange(0, 2)
-print(re.findall(r'\d*(\-|\sto\s)?\d+\s*\%', "30-50%"))
-print(re.findall(r'\d{0,2}\-?\d{1,3}\s*\%', "30-50%"))
 
 def tiebreaker(majority):
     newmajority = min(majority)  # change from min to max for diff result
@@ -63,10 +121,14 @@ def rem_keywords():
 rem_keywords()
 
 tlabels = []
+
 for a in df.Abstract:
     label_i = Counter()
     label_i[exp_studies_keywords(a)] += 1
     label_i[find_percentage(a)] += 1
+    label_i[experimental_functional(a)] += 1
+    label_i[in_vitro_before(a)] += 1
+    label_i[in_vitro_after(a)] += 1
     #majority alg
     majority = label_i.most_common()
     if(len(majority) > 1 and majority[0][1] == majority[1][1]):
