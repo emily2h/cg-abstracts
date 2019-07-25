@@ -1,0 +1,70 @@
+#experimental tests
+
+Single Gene Sequencing
+Deletion Analysis
+Duplication Analysis
+Multiplex ligation-dependent probe amplification (MLPA)
+gene rearrangement analysis
+copy number variant (CNV) analysis
+Targeted Mutation Analysis
+Single site testing
+mutation probe
+mutation panels
+multi-site analysis
+Multi-Gene Panels
+Next generation sequencing (NGS) panels
+expanded panel testing
+massively parallel sequencing
+high throughput sequencing
+Whole Exome Sequencing
+Whole Genome Sequencing
+Chromosome Analysis
+Karyotype
+traditional chromosome analysis
+high-resolution chromosome study
+cytogenetic analysis
+Chromosomal Microarray
+CMA
+Array comparative genomic hybridization (aCGH)
+Copy number variant (CNV) analysis
+SNP array
+oligoarray
+BAC array
+Fluorescent In Situ Hybridization
+FISH
+Tumor Screening for Hereditary Cancer
+Tumor Genome Analysis
+Tumor molecular profiling
+flow cytometry
+confocal microscopy
+reverse transcriptase polymerase chain reaction
+Cell-free fetal DNA (cffDNA)
+Newborn screening
+Diagnostic testing
+carrier testing
+Preimplantation genetic diagnosis
+preimplantation testing
+Prenatal diagnosis 
+prenatal testing
+Predictive and presymptomatic testing
+Pharmacogenomics
+Pharmacogenetics
+PCR
+Polymerase Chain Reaction
+Western Blot
+Enzyme-linked Immunosorbent assay (ELISA)
+DNA sequencing
+Cytogenetics
+Microarrays
+Gene expression profiling
+immunoassays
+molecular diagnostics
+Conformational diagnosis of a symptomatic individual
+Presymptomatic testing for estimating risk of developing disease
+Presymptomatic testing for diagnosing a disease that will manifest later
+Prenatal screening and diagnosis
+Newborn screening
+Preimplantation genetic diagnosis
+Carrier screening
+Forensic testing
+Paternal testing
