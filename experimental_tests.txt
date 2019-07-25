@@ -1,18 +1,22 @@
-#experimental tests
-
 Single Gene Sequencing
 Deletion Analysis
 Duplication Analysis
-Multiplex ligation-dependent probe amplification (MLPA)
+Multiplex ligation-dependent probe amplification
+ MLPA 
+(MLPA)
 gene rearrangement analysis
-copy number variant (CNV) analysis
+copy number variant analysis
+ CNV 
+(cnv)
 Targeted Mutation Analysis
 Single site testing
 mutation probe
 mutation panels
 multi-site analysis
 Multi-Gene Panels
-Next generation sequencing (NGS) panels
+Next generation sequencing panels
+ NGS 
+(NGS)
 expanded panel testing
 massively parallel sequencing
 high throughput sequencing
@@ -24,21 +28,28 @@ traditional chromosome analysis
 high-resolution chromosome study
 cytogenetic analysis
 Chromosomal Microarray
-CMA
-Array comparative genomic hybridization (aCGH)
-Copy number variant (CNV) analysis
+ CMA 
+(cma)
+Array comparative genomic hybridization
+ aCGH 
+(acgh)
+Copy number variant analysis
+ CNV 
+(cnv)
 SNP array
 oligoarray
 BAC array
 Fluorescent In Situ Hybridization
-FISH
+ FISH 
+(fish)
 Tumor Screening for Hereditary Cancer
 Tumor Genome Analysis
 Tumor molecular profiling
 flow cytometry
 confocal microscopy
 reverse transcriptase polymerase chain reaction
-Cell-free fetal DNA (cffDNA)
+Cell-free fetal DNA
+cffDNA
 Newborn screening
 Diagnostic testing
 carrier testing
@@ -49,10 +60,13 @@ prenatal testing
 Predictive and presymptomatic testing
 Pharmacogenomics
 Pharmacogenetics
-PCR
+ PCR 
+(PCR)
 Polymerase Chain Reaction
 Western Blot
-Enzyme-linked Immunosorbent assay (ELISA)
+Enzyme-linked Immunosorbent assay
+ ELISA 
+(elisa)
 DNA sequencing
 Cytogenetics
 Microarrays

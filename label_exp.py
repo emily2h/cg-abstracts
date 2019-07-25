@@ -1,10 +1,12 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import re
 import random
 import spacy 
 from spacy.lemmatizer import Lemmatizer
 from spacy.lang.en import LEMMA_INDEX, LEMMA_EXC, LEMMA_RULES
 from sklearn.metrics import confusion_matrix
+from sklearn import metrics
 from collections import Counter
 from itertools import islice
 
@@ -12,13 +14,20 @@ nlp = spacy.load("en")
 userdir = "/home/emily2h/Summer/cg-abstracts"
 filename = "vci_1543_abs_tit_key_apr_1_2019_train.csv"
 
-df = pd.read_csv("{}/{}".format(userdir, filename), sep='\t', header=0)
+df = pd.read_csv("{}/{}".format(userdir, filename))#, sep='\t', header=None, names = ["Abstract", "Classification"])
+
+
 keywords0 = open("keywords0.txt", "r").read().splitlines()
 
+exp = open("experimental_tests.txt", "r").read().splitlines()
+exp_test = list(set([w.lower() for w in exp]))
+print(exp_test)
+print(df.info())
+
 addtolabelcol = lambda row: 1\
-        if '0' in row.Classification\
+        if '0' in row\
         else 0
-df['true_label0'] = df.apply(addtolabelcol, axis=1)
+df['true_label0'] = df['Classification'].apply(addtolabelcol)
 
 lemmatizer = Lemmatizer(LEMMA_INDEX, LEMMA_EXC, LEMMA_RULES)
 lemmas = lemmatizer(u"experimental", u"ADJ")
@@ -27,14 +36,6 @@ print(lemmas)
 remKeyWords = lambda row: re.sub(r'\|\|.*\|\|', '', row)
 df['Abstract'] = df['Abstract'].apply(remKeyWords)
 
-def window(seq, n=2):
-    it = iter(seq)
-    result = tuple(islice(it, n))
-    if len(result) == n:
-        yield result
-    for elem in it:
-        result = result[1:] + (elem,)
-        yield result
 
 # labeling function 1
 def exp_studies_keywords(abstract):
@@ -61,46 +62,63 @@ def experimental_functional(abstract):
             return 1
     return 0
 
-in_vitro_keyword = [('in', 'vitro'), ('in', 'vivo')]
-before = ['analy', 'assess']
-after = ['analy', 'activity']
-"""
 # labeling function 4
 def in_vitro_before(abstract):
-    ab = [token.text.lower() for token in nlp(abstract)]
-    print(ab)
-    for pair in window(ab):
-        if pair in in_vitro_keyword:
-            print(pair)
-            return 1
-    return 0
-"""
-def in_vitro_before(abstract):
-    result = re.findall(r'(in vivo|in vitro|ex vivo).{0,50}(analy|assess|activity)', abstract)
+    ab = abstract.lower()
+    result = re.findall(r'(in vivo|in vitro|ex vivo).{0,50}(analy|assess|activity)', ab)
     if len(result) < 1:
         return 0
     else:
-        print("HERE IS THE RESULT",result)
+        #print("HERE IS THE RESULT",result)
         return 1
-in_vitro_before("Conduct an vivo in and in vitro analysis of x.")
 
     
 # labeling function 5
 def in_vitro_after(abstract):
-    result = re.findall(r'(analy|assess).{0,50}(in vivo|in vitro|ex vivo)', abstract)
+    ab = abstract.lower()
+    result = re.findall(r'(analy|assess).{0,50}(in vivo|in vitro|ex vivo)', ab)
     if len(result) < 1:
         return 0
     else:
-        print("HERE IS THE SECOND RESULT",result)
+        #print("HERE IS THE SECOND RESULT",result)
         return 1
-    
+
+# labeling function 6
+def experimental_tests(abstract):
+    ab = abstract.lower()
+    for test in exp_test:
+        if test in ab:
+            #print("abstract**",ab)
+            #print("this is the test",test)
+            return 1
+    return 0
+
+# labeling function 7
+def elevated(abstract):
+    ab = abstract.lower()
+    result = re.findall(r'(reduc|increas|elevat|decreas|diminish|high|inflat).{0,50}(compar|activit)', ab)
+    if len(result) < 1:
+        return 0
+    else:
+        print(result)
+        return 1
+
+# labeling function 8
+def elevated_before(abstract):
+    ab = abstract.lower()
+    result = re.findall(r'(compar|activit).{0,50}(reduc|increas|elevat|decreas|diminish|high|inflat)', ab)
+    if len(result) < 1:
+        return 0
+    else:
+        print(result)
+        return 1
 
 # returns random label
 #def random_label3():
 #    return random.randrange(0, 2)
 
 def tiebreaker(majority):
-    newmajority = min(majority)  # change from min to max for diff result
+    newmajority = max(majority)  # change from min to max for diff result
     return [newmajority]
 
 
@@ -129,6 +147,9 @@ for a in df.Abstract:
     label_i[experimental_functional(a)] += 1
     label_i[in_vitro_before(a)] += 1
     label_i[in_vitro_after(a)] += 1
+    label_i[experimental_tests(a)] += 1
+    label_i[elevated(a)] += 1
+    label_i[elevated_before(a)] += 1
     #majority alg
     majority = label_i.most_common()
     if(len(majority) > 1 and majority[0][1] == majority[1][1]):
@@ -177,3 +198,25 @@ print('precision: ', precision1)
 
 recall1 = cm1[0,0]/(cm1[0,0]+cm1[0,1])
 print('recall: ', recall1)
+
+fpr = cm1[1,0]/(cm1[1,0]+cm1[1,1])
+print('false positive rate: ', fpr)
+
+average_precision = metrics.average_precision_score(df.true_label0, df.predicted_label0)
+
+precision, recall, thresholds = metrics.precision_recall_curve(df.true_label0, df.predicted_label0)
+f1 = metrics.f1_score(df.true_label0, df.predicted_label0)
+auc = metrics.auc(recall, precision)
+
+auroc = metrics.roc_auc_score(df.true_label0, df.predicted_label0)
+
+print('Average precision-recall score: {0:0.2f}'.format(average_precision))
+print('F1 score: {0:0.2f}'.format(f1))
+print('AUC: {0:0.2f}'.format(auc))
+print('AUROC: {0:0.2f}'.format(auroc))
+plt.plot([0,1], [0.5,0.5], linestyle='--')
+plt.plot(recall, precision, marker='.')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title("Precision-Recall Curve")
+plt.show()

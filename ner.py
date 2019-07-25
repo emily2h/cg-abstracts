@@ -16,7 +16,6 @@ doc = nlp(text)
 #print("sentences?:",list(doc.sents))
 
 print("entities?",doc.ents)
-print(doc)
 
 print("Abbreviation", "\t", "Definition")
 for abrv in doc._.abbreviations:
