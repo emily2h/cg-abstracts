@@ -1,0 +1,17 @@
+proband
+ trans 
+ cis 
+parental screening
+parental testing
+compound heterozygosity
+homozygous
+heterozygous
+recessive
+nonsense
+missense
+allelic
+probands
+microdeletion
+microdeletions
+insertion
+insertions

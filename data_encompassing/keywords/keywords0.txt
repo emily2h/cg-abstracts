@@ -1,0 +1,34 @@
+transfection
+transfected
+experiment
+experiments
+assay
+assays
+measure
+in vitro
+in vivo
+ex vivo
+mutagenesis
+plasmid
+expression
+clearance
+transport
+binding
+binds
+activity
+impairment
+dysfunction
+activate
+activation
+mechanism
+protein
+animal
+negative control
+positive control
+normal control
+healthy control
+abnormal
+compared to normal
+of normal
+compared to wild-type
+of wild-type
