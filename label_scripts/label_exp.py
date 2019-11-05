@@ -19,7 +19,7 @@ argv = sys.argv[1]
 
 nlp = spacy.load("en")
 #userdir = "/home/emily2h/Summer/cg-abstracts"
-userdir = "/home/emily2h/Summer/cg-abstracts/data_b"
+userdir = "/home/emily2h/Summer/cg-abstracts/data_encompassing/data_b"
 if argv == 'og_train':
     filename = "vci_1543_abs_tit_key_apr_1_2019_train.csv"
     NUM_ROWS = 1543
@@ -46,9 +46,9 @@ print(df.head())
 df['true_label0'] = df['true_label0'].apply(lambda x : 2 if x == 0 else 1)
 
 
-keywords0 = open("keywords0.txt", "r").read().splitlines()
+keywords0 = open("/home/emily2h/Summer/cg-abstracts/data_encompassing/keywords/keywords0.txt", "r").read().splitlines()
 
-exp = open("experimental_tests.txt", "r").read().splitlines()
+exp = open("/home/emily2h/Summer/cg-abstracts/experimental_tests.txt", "r").read().splitlines()
 exp_test = list(set([w.lower() for w in exp]))
 print(exp_test)
 print(df.info())
@@ -244,9 +244,9 @@ for i, a in enumerate(df.Abstract):
 data = np.reshape(data, (NUM_ROWS, len(lfs)))
 np.set_printoptions(threshold=np.inf)
 print(data)
-pickling_on = open("label_mat_{}0.pickle".format(flag), "wb")
-pickling_on2 = open("data_{}.pickle".format(flag), "wb")
-pickling_on3 = open("labels_{}0.pickle".format(flag), "wb")
+pickling_on = open("/home/emily2h/Summer/cg-abstracts/data_encompassing/label_mat_{}/label_mat_{}0.pickle".format(flag, flag), "wb")
+pickling_on2 = open("/home/emily2h/Summer/cg-abstracts/data_encompassing/data/data_{}.pickle".format(flag), "wb")
+pickling_on3 = open("/home/emily2h/Summer/cg-abstracts/data_encompassing/labels/labels_{}0.pickle".format(flag), "wb")
 pickle.dump(data, pickling_on)
 pickle.dump(df['Abstract'].values, pickling_on2)
 pickle.dump(df['true_label0'].values, pickling_on3)
@@ -265,7 +265,7 @@ df['predicted_label0'] = labels
 
 df_fn = df[(df['true_label0'] == 1) & (df['predicted_label0'] == 0)]
 print(df_fn.shape)
-df_fn.to_csv(path_or_buf="false_negatives.csv", index=False)
+df_fn.to_csv(path_or_buf="/home/emily2h/Summer/cg-abstracts/data_encompassing/false_negatives.csv", index=False)
 print(df_fn.head())
 
 score()
