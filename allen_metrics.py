@@ -11,9 +11,9 @@ vci_external_test_X_words = []
 
 filename = ''
 if flag == 'test':
-    filename = '/home/emily2h/Summer/cg-abstracts/vci_1543_abs_tit_key_apr_1_2019_test.csv'
+    filename = '/home/emily2h/Summer/cg-abstracts/data_encompassing/data_testfiles/vci_1543_abs_tit_key_apr_1_2019_test.csv'
 if flag == 'true_test':
-    filename = '/home/emily2h/Summer/cg-abstracts/vci_358_abs_tit_key_may_7_2019_true_test.csv'
+    filename = '/home/emily2h/Summer/cg-abstracts/data_encompassing/data_testfiles/vci_358_abs_tit_key_may_7_2019_true_test.csv'
 
 with open(filename) as f:
     for line in f:
@@ -28,9 +28,9 @@ with open(filename) as f:
 ys = np.array(vci_external_test_Y)
 labels = []
 if flag2 == 'baseline':
-    labels = pickle.load(open("/home/emily2h/Summer/metal/tutorials/label_mat_baseline_{}.pickle".format(flag), 'rb'))
+    labels = pickle.load(open("/home/emily2h/Summer/cg-abstracts/data_encompassing/label_mat_{}/label_mat_baseline_{}.pickle".format(flag, flag), 'rb'))
 else:
-    labels = pickle.load(open("/home/emily2h/Summer/metal/tutorials/label_mat_{}.pickle".format(flag), 'rb'))
+    labels = pickle.load(open("/home/emily2h/Summer/cg-abstracts/data_encompassing/label_mat_{}/label_mat_{}.pickle".format(flag, flag), 'rb'))
 
 print(metrics.classification_report(ys, labels, digits=3))
 print("Exact match: ", metrics.accuracy_score(ys, labels))

@@ -142,7 +142,7 @@ mv2.train_model(np.asarray(new_balance))
 #=np.asarray(new_balance))
 
 #Y_baseline = mv2.predict(Ls[2])
-pickling_on2 = open("ar_baseline_{}{}".format(flag0, flag), "wb")
+pickling_on2 = open("data_encompassing/ar/ar_baseline_{}{}".format(flag0, flag), "wb")
 pickle.dump(Y_baseline, pickling_on2)
 print(Y_baseline)
 
@@ -157,7 +157,7 @@ print(np.asarray(Y_baseline))
 """
 
 Y_tes = label_model.predict(Ls[2])
-pickling_on = open("ar_{}{}".format(flag0, flag), "wb")
+pickling_on = open("data_encompassing/ar/ar_{}{}".format(flag0, flag), "wb")
 print(Y_tes,type(Y_tes))
 pickle.dump(Y_tes, pickling_on)
 
